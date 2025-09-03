@@ -1,8 +1,6 @@
 package pos.machine;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PosMachine {
     public String printReceipt(List<String> barcodes) {
@@ -24,5 +22,17 @@ public class PosMachine {
         // 所有条码都存在，返回true
         return true;
     }
+
+    public static Map<String, Integer> convertToCountMap(List<String> barcodes) {
+        // 创建用于存储Map用于存储结果
+        Map<String, Integer> countMap = new HashMap<>();
+        // 遍历条码列表，统计每个条码出现的次数
+        for (String barcode : barcodes) {
+            // 如果Map中已存在该条码，则次数+1；否则初始化为1
+            countMap.put(barcode, countMap.getOrDefault(barcode, 0) + 1);
+        }
+        return countMap;
+    }
+
 
 }
