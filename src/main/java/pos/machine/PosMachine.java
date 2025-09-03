@@ -23,7 +23,7 @@ public class PosMachine {
         return true;
     }
 
-    public static Map<String, Integer> convertToCountMap(List<String> barcodes) {
+    public static Map<String, Integer> processData(List<String> barcodes) {
         // 创建用于存储Map用于存储结果
         Map<String, Integer> countMap = new HashMap<>();
         // 遍历条码列表，统计每个条码出现的次数
@@ -33,6 +33,28 @@ public class PosMachine {
         }
         return countMap;
     }
-
+    public static String generateReceipt(Map<String, Integer> barcodesMap){
+        int total =0;
+        for (Map.Entry<String, Integer> entry : barcodesMap.entrySet()) {
+            String barcode = entry.getKey();
+            int quantity = entry.getValue();
+            // 调用单个计算方法
+            int subtotal = calculateSubtotal(barcode, quantity);
+            total=total+subtotal;
+        }
+        return "";
+    }
+    public static int calculateSubtotal(String barcode, int quantity) {
+        // 查找对应商品的单价
+        List<Item> items = ItemsLoader.loadAllItems();
+        for (Item item : items) {
+            if (item.getBarcode().equals(barcode)) {
+                // 计算并返回总价格（假设价格为整数）
+                return item.getPrice() * quantity;
+            }
+        }
+        // 未找到对应商品时返回0（可根据需求改为抛出异常）
+        return 0;
+    }
 
 }
