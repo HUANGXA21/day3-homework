@@ -53,7 +53,7 @@ public class PosMachine {
             total=total+subtotal;
         }
         receipt.append("---------------------").append("\n");
-        receipt.append("Total: ").append(total).append(" (yuan)");
+        receipt.append("Total: ").append(total).append(" (yuan)").append("\n");
         receipt.append("*********************");
         return receipt.toString();
     }
