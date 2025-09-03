@@ -35,14 +35,21 @@ public class PosMachine {
     }
     public static String generateReceipt(Map<String, Integer> barcodesMap){
         int total =0;
+        StringBuilder receipt = new StringBuilder();
+        receipt.append("***<store earning no money>Receipt***").append("\n");
         for (Map.Entry<String, Integer> entry : barcodesMap.entrySet()) {
             String barcode = entry.getKey();
             int quantity = entry.getValue();
             // 调用单个计算方法
             int subtotal = calculateSubtotal(barcode, quantity);
+            String barcodeList = generateBarcodeList(barcode, quantity, subtotal);
+            receipt.append(barcodeList).append("\n");
             total=total+subtotal;
         }
-        return "";
+        receipt.append("---------------------").append("\n");
+        receipt.append("Total: ").append(total).append(" (yuan)");
+        receipt.append("*********************");
+        return receipt.toString();
     }
     public static int calculateSubtotal(String barcode, int quantity) {
         // 查找对应商品的单价
@@ -56,5 +63,17 @@ public class PosMachine {
         // 未找到对应商品时返回0（可根据需求改为抛出异常）
         return 0;
     }
-
+    public static String generateBarcodeList(String barcode, int quantity, int subtotal) {
+        List<Item> items = ItemsLoader.loadAllItems();
+        String name="initName";
+        int price=0;
+        for (Item item : items) {
+            if (item.getBarcode().equals(barcode)) {
+               name =  item.getName();
+               price = item.getPrice();
+                break;
+            }
+        }
+        return String.format("Name: %s, Quantity: %d, Unit price: %d (yuan), Subtotal: %d (yuan)", name, quantity, price, subtotal);
+    }
 }
