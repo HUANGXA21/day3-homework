@@ -3,8 +3,14 @@ package pos.machine;
 import java.util.*;
 
 public class PosMachine {
-    public String printReceipt(List<String> barcodes) {
-        return null;
+    public  static String printReceipt(List<String> barcodes) {
+        if(isMatch(barcodes)){
+            Map<String, Integer> barcodesMap = processData(barcodes);
+            String receipt = generateReceipt(barcodesMap);
+            return receipt;
+        }else {
+          return "传入barcode不匹配";
+        }
     }
 
     public static boolean isMatch(List<String> barcodes) {
